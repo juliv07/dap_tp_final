@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "780386437987",
+    "project_id": "dap-tp-final",
+    "storage_bucket": "dap-tp-final.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780386437987:android:cfe3b3dfbf04c912de2156",
+        "android_client_info": {
+          "package_name": "com.example.tp_final_dap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi38m2zeIsly1rytxVx0T9rkiPjtuVWMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
