@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tp_final_dap/entities/User.dart';
+import 'package:tp_final_dap/providers/userProvider.dart';
 
 class LoginPasswordVisibilityNotifier extends StateNotifier<bool> {
   LoginPasswordVisibilityNotifier() : super(true);
@@ -127,6 +129,31 @@ class LoginScreen extends ConsumerWidget {
                         .where('name', isEqualTo: inputName)
                         .where('password', isEqualTo: inputPassword)
                         .get();
+
+                        if (firebaseData.docs.isNotEmpty){
+                          DocumentSnapshot doc = firebaseData.docs.first;
+                          var data = doc.data() as Map<String, dynamic>;
+
+                          ref.read(userInfoProvider.notifier).state = 
+                          User(
+                            name: data['name'], 
+                            password: data['password'], 
+                            userId: data['userId']
+                          );
+
+                          context.push('home');
+                        } else{
+                            SnackBar wrongEmailOrPassword = SnackBar(
+                              content: const Text('Usuario o contraseña incorrectos. Intente de nuevo.',
+                              style: TextStyle(color: Colors.black)),
+                              backgroundColor: Colors.yellow,
+                              shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            duration: const Duration(seconds: 2),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(wrongEmailOrPassword);
+                        }
                       }
                     },
                     child: const Text('Ingresar'),
