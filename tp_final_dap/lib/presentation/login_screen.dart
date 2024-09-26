@@ -20,7 +20,7 @@ final loginPasswordVisibilityProvider = StateNotifierProvider<LoginPasswordVisib
 
 class LoginScreen extends ConsumerWidget {
   static const String name = 'login';
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -34,7 +34,7 @@ class LoginScreen extends ConsumerWidget {
     final focusNode2 = FocusNode();
     final focusNode3 = FocusNode();
 
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +44,7 @@ class LoginScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Form(
-            key: _formKey, 
+            key: formKey, 
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -116,11 +116,13 @@ class LoginScreen extends ConsumerWidget {
                     },
                   ),
 
+                  const SizedBox(height: 30),
+
                   ElevatedButton(
                     focusNode: focusNode3,
                     onPressed: () async {
                   
-                      if (_formKey.currentState?.validate() ?? false) {
+                      if (formKey.currentState?.validate() ?? false) {
                         String inputName = nameController.text;
                         String inputPassword = pswdController.text;
 
