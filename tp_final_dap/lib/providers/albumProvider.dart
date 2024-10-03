@@ -11,8 +11,8 @@ class AlbumsNotifier extends StateNotifier<List<Album>> {
 
   AlbumsNotifier(this.db) : super([]);
 
-  Future<void> addMovie(Album album) async {
-    final doc = db.collection('movies').doc();
+  Future<void> addAlbum(Album album) async {
+    final doc = db.collection('albums').doc();
     try {
       await doc.set(album.toFirestore());
       state = [...state, album];
@@ -21,11 +21,11 @@ class AlbumsNotifier extends StateNotifier<List<Album>> {
     }
   }
 
-  Future<void> getAllMovies() async {
-    final docs = db.collection('movies').withConverter(
+  Future<void> getAllAlbums() async {
+    final docs = db.collection('albums').withConverter(
         fromFirestore: Album.fromFirestore,
-        toFirestore: (Album movie, _) => movie.toFirestore());
-    final movies = await docs.get();
-    state = [...state, ...movies.docs.map((d) => d.data())];
+        toFirestore: (Album album, _) => album.toFirestore());
+    final album = await docs.get();
+    state = [...state, ...album.docs.map((d) => d.data())];
   }
 }
