@@ -20,12 +20,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     ref.read(albumProvider.notifier).getAllAlbums();
+    
   }
   
   @override
   Widget build(BuildContext context) {
     //return Placeholder();
     User? userInfo = ref.watch(userInfoProvider);
+
     List<Album>? albums = ref.watch(albumProvider);
 
     if (userInfo == null || albums == null) {

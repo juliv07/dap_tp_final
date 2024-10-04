@@ -24,7 +24,7 @@ class AlbumsNotifier extends StateNotifier<List<Album>> {
   }
 
   Future<void> deleteAlbum(String albumId) async {
-    final doc = db.collection('albums').doc('albumId');
+    final doc = db.collection('albums').doc(albumId);
     try {
       await doc.delete();
       state = state.where((album) => album.albumId != albumId).toList();
