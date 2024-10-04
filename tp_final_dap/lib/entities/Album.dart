@@ -36,7 +36,7 @@ Album({
 
     return Album(
       albumName: data?['albumName'],
-      artist: data?['title'],
+      artist: data?['artist'],
       description: data?['description'],
       imgURL: data?['imgURL'],
       year: data?['year'],

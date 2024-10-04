@@ -1,41 +1,58 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tp_final_dap/entities/Album.dart';
+import 'package:tp_final_dap/presentation/edit_album_screen.dart';
+import 'package:tp_final_dap/presentation/home_screen.dart';
+import 'package:tp_final_dap/providers/albumProvider.dart';
 
 class AlbumDetailScreen extends ConsumerWidget {
-  static const String name = 'album_detail_screen';
+  static const String name = 'album_detail';
 
-  final String albumId;
-  Album? album;
+  AlbumDetailScreen({super.key});
 
-  AlbumDetailScreen({super.key, required this.albumId, this.album});
 
   @override
   Widget build(BuildContext context, ref) {
+
+    Album album = ref.watch(currentAlbum);
+    
     return Scaffold(
-      appBar: AppBar(title: Text(album!.albumName),),
+      appBar: AppBar(title: Text(album.albumName),),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Image.network(album!.imgURL),
+                Image.network(album.imgURL),
                 const SizedBox(height: 30),
-                Text('${album!.albumName} (${album!.year})', style: const TextStyle(fontSize: 24),),
+                Text('${album.albumName} (${album.year})', style: const TextStyle(fontSize: 24),),
                 const SizedBox(height: 30),
-                Text(album!.artist),
+                Text(album.artist),
                 const SizedBox(height: 30),
-                Text(album!.description),
+                Text(album.description),
                 const SizedBox(height: 30,),
 
                 ElevatedButton(
                   onPressed: (){
-                    context.push('/edit_album/${album!.albumId}');
+                    context.pushNamed(EditAlbumScreen.name);
                   }, 
                   child: const Text('Editar'),
                 ),
+                ElevatedButton(
+                  onPressed: (){
+                    ref.read(albumProvider.notifier).deleteAlbum(album.albumId);
+                    context.pushNamed(HomeScreen.name);
+                  }, 
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    textStyle: const TextStyle(color: Colors.white)
+                  ),
+                  child: const Text('Eliminar') 
+                )
               ],
             ),
           )

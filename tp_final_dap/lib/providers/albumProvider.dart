@@ -6,6 +6,8 @@ final albumProvider = StateNotifierProvider<AlbumsNotifier, List<Album>>(
   (ref) => AlbumsNotifier(FirebaseFirestore.instance),
 );
 
+StateProvider<Album> currentAlbum = StateProvider((ref) => Album(albumName: 'albumName', artist: 'artist', description: 'description', imgURL: 'imgURL', year: 0, albumId: 'albumId'));
+
 class AlbumsNotifier extends StateNotifier<List<Album>> {
   final FirebaseFirestore db;
 
@@ -16,6 +18,16 @@ class AlbumsNotifier extends StateNotifier<List<Album>> {
     try {
       await doc.set(album.toFirestore());
       state = [...state, album];
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> deleteAlbum(String albumId) async {
+    final doc = db.collection('albums').doc('albumId');
+    try {
+      await doc.delete();
+      state = state.where((album) => album.albumId != albumId).toList();
     } catch (e) {
       print(e);
     }

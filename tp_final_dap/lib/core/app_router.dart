@@ -10,22 +10,20 @@ final appRouter = GoRouter(
     GoRoute(
       name: LoginScreen.name,
       path: '/login',
-      builder: (  context, state) => LoginScreen(),
+      builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
       name: HomeScreen.name,
       path: '/home',
-      builder: (  context, state) => const HomeScreen(),
+      builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
-      path: '/album_detail/:albumId',
+      path: '/album_detail',
       name: AlbumDetailScreen.name,
-      builder: (context, state) => AlbumDetailScreen(
-        albumId: state.pathParameters['albumId']!,
-      ),
+      builder: (context, state) => AlbumDetailScreen(),
     ),
     GoRoute(
-      path: '/edit_album/:albumId',
+      path: '/edit_album',
       name: EditAlbumScreen.name,
       builder: (context, state) => EditAlbumScreen(
         albumId: state.pathParameters['albumId']!,

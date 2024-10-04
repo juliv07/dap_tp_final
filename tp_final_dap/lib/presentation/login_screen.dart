@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tp_final_dap/entities/User.dart';
+import 'package:tp_final_dap/presentation/home_screen.dart';
 import 'package:tp_final_dap/providers/userProvider.dart';
 
 class LoginPasswordVisibilityNotifier extends StateNotifier<bool> {
@@ -20,22 +21,22 @@ final loginPasswordVisibilityProvider = StateNotifierProvider<LoginPasswordVisib
 
 class LoginScreen extends ConsumerWidget {
   static const String name = 'login';
+  
   LoginScreen({super.key});
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController pswdController = TextEditingController();
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  final focusNode1 = FocusNode();
+  final focusNode2 = FocusNode();
+  final focusNode3 = FocusNode();
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, ref) {
-
-    TextEditingController nameController = TextEditingController();
-    TextEditingController pswdController = TextEditingController();
-
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    final focusNode1 = FocusNode();
-    final focusNode2 = FocusNode();
-    final focusNode3 = FocusNode();
-
-    final formKey = GlobalKey<FormState>();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -71,7 +72,7 @@ class LoginScreen extends ConsumerWidget {
                       color: Color.fromARGB(255, 50, 143, 255),
                       )
                     ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
@@ -136,21 +137,30 @@ class LoginScreen extends ConsumerWidget {
                           DocumentSnapshot doc = firebaseData.docs.first;
                           var data = doc.data() as Map<String, dynamic>;
 
+                          String nameFromDB = data['name'];
+                          String passwordFromDB = data['password'];
+                          String idFromDB = data['userId'];
+
                           ref.read(userInfoProvider.notifier).state = 
                           User(
-                            name: data['name'], 
-                            password: data['password'], 
-                            userId: data['userId']
+                            name: nameFromDB, 
+                            password: passwordFromDB, 
+                            userId: idFromDB
                           );
+                          try {
+                            context.pushNamed(HomeScreen.name);
+                          } catch (e) {
+                            print('Error during navigation: $e');
+                          }       
+                        } 
 
-                          context.push('home');
-                        } else{
-                            SnackBar wrongEmailOrPassword = SnackBar(
-                              content: const Text('Usuario o contraseña incorrectos. Intente de nuevo.',
-                              style: TextStyle(color: Colors.black)),
-                              backgroundColor: Colors.yellow,
-                              shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        if(firebaseData.docs.isEmpty){                            
+                          SnackBar wrongEmailOrPassword = SnackBar(
+                            content: const Text('Usuario o contraseña incorrectos. Intente de nuevo.',
+                            style: TextStyle(color: Colors.black)),
+                            backgroundColor: Colors.yellow,
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                             ),
                             duration: const Duration(seconds: 2),
                           );
