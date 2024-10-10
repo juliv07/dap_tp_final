@@ -25,9 +25,7 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/edit_album',
       name: EditAlbumScreen.name,
-      builder: (context, state) => EditAlbumScreen(
-        albumId: state.pathParameters['albumId']!,
-      ),
-    )
+      builder: (context, state) => EditAlbumScreen(),
+    ),
   ]
 );

@@ -45,7 +45,8 @@ class AlbumDetailScreen extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: (){
                     ref.read(albumProvider.notifier).deleteAlbum(album.albumId);
-                    context.pushNamed(HomeScreen.name);
+                    ref.read(albumProvider.notifier).state = [];
+                    context.goNamed(HomeScreen.name);
                   }, 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,

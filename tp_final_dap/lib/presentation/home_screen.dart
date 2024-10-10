@@ -28,9 +28,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     //return Placeholder();
     User? userInfo = ref.watch(userInfoProvider);
 
-    List<Album>? albums = ref.watch(albumProvider);
+    List<Album> albums = ref.watch(albumProvider);
 
-    if (userInfo == null || albums == null) {
+    if (userInfo == null) {
       return const Center(child: CircularProgressIndicator());
     }
     
@@ -50,7 +50,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       leading: Image.network(
                         albums[index].imgURL,
                         errorBuilder: (contex, error, stackTrace){
-                          return const Icon (Icons.broken_image);
+                          return const Icon (Icons.hide_image_outlined);
                         },
                       ),
                       trailing: const Icon(Icons.arrow_forward_ios),
