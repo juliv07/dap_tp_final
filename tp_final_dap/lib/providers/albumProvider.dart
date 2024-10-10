@@ -8,6 +8,8 @@ final albumProvider = StateNotifierProvider<AlbumsNotifier, List<Album>>(
 
 StateProvider<Album> currentAlbum = StateProvider((ref) => Album(albumName: 'albumName', artist: 'artist', description: 'description', imgURL: 'imgURL', year: 0, albumId: 'albumId'));
 
+StateProvider<int> selectedAlbumIndexProvider = StateProvider((ref) => 0);
+
 class AlbumsNotifier extends StateNotifier<List<Album>> {
   final FirebaseFirestore db;
 

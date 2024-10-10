@@ -56,6 +56,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: (){
                         ref.read(currentAlbum.notifier).state = albums[index];
+                        ref.read(selectedAlbumIndexProvider.notifier).state = index;
                         context.pushNamed(AlbumDetailScreen.name);
                       },
                     );
