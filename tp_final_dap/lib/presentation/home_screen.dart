@@ -16,11 +16,24 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final FocusNode _focusNode = FocusNode();
+
   @override
-  void initState() {
+  void initState()  {
     super.initState();
-    ref.read(albumProvider.notifier).getAllAlbums();
     
+    _focusNode.addListener(() {
+        if (_focusNode.hasFocus) {
+          ref.read(albumProvider.notifier).getAllAlbums();
+        }
+      }
+    );
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
   
   @override
@@ -33,40 +46,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (userInfo == null) {
       return const Center(child: CircularProgressIndicator());
     }
-    
-    return Scaffold(
-      appBar: AppBar(title: Text('Albums de ${userInfo.name}')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: albums.length,
-                  itemBuilder: (context, index){
-                    return ListTile(
-                      title: Text(albums[index].albumName),
-                      leading: Image.network(
-                        albums[index].imgURL,
-                        errorBuilder: (contex, error, stackTrace){
-                          return const Icon (Icons.hide_image_outlined);
+    return Focus(
+      focusNode: _focusNode,
+      autofocus: true,
+      child: Scaffold(
+        appBar: AppBar(title: Text('Albums de ${userInfo.name}')),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: albums.length,
+                    itemBuilder: (context, index){
+                      return ListTile(
+                        title: Text(albums[index].albumName),
+                        leading: Image.network(
+                          albums[index].imgURL,
+                          errorBuilder: (contex, error, stackTrace){
+                            return const Icon (Icons.hide_image_outlined);
+                          },
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: (){
+                          ref.read(currentAlbum.notifier).state = albums[index];
+                          ref.read(selectedAlbumIndexProvider.notifier).state = index;
+                          context.pushNamed(AlbumDetailScreen.name);
                         },
-                      ),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: (){
-                        ref.read(currentAlbum.notifier).state = albums[index];
-                        ref.read(selectedAlbumIndexProvider.notifier).state = index;
-                        context.pushNamed(AlbumDetailScreen.name);
-                      },
-                    );
-                  }
+                      );
+                    }
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 }

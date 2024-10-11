@@ -43,7 +43,7 @@ class AlbumDetailScreen extends ConsumerWidget {
                   child: const Text('Editar'),
                 ),
                 ElevatedButton(
-                  onPressed: (){
+                  onPressed: () async{
                     ref.read(albumProvider.notifier).deleteAlbum(album.albumId);
                     ref.read(albumProvider.notifier).state = [];
                     context.goNamed(HomeScreen.name);

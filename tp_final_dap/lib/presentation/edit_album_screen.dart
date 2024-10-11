@@ -173,11 +173,9 @@ class EditAlbumScreen extends ConsumerWidget {
                           albumId: album.albumId
                         );
                         
-                        await ref.read(albumProvider.notifier).deleteAlbum(album.albumId);
-                        await ref.read(albumProvider.notifier).addAlbum(newAlbum);
+                        ref.read(albumProvider.notifier).editAlbum(album.albumId, newAlbum);
                         
-                        ref.read(albumProvider.notifier).state[selectedAlbumIndex] = newAlbum;
-                         ref.read(albumProvider.notifier).state = [];
+                        ref.read(albumProvider.notifier).state = [];
 
                         context.goNamed(HomeScreen.name);
                       }

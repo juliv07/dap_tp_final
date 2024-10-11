@@ -35,6 +35,25 @@ class AlbumsNotifier extends StateNotifier<List<Album>> {
     }
   }
 
+  Future<void> editAlbum(String albumId, Album album) async {
+    final doc = db.collection('albums').doc(albumId);
+
+    final newDoc = {
+      'albumName': album.albumId,
+      'artist': album.artist,
+      'year': album.year,
+      'description': album.description,
+      'imgURL': album.imgURL,
+    };
+    
+    try {
+      await doc.update(newDoc);
+      state = state.map((d) => d.albumId == albumId ? album : d).toList();    
+    } catch (e){
+      print(e);
+    }
+  }
+
   Future<void> getAllAlbums() async {
     final docs = db.collection('albums').withConverter(
         fromFirestore: Album.fromFirestore,
