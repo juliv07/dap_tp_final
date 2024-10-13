@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tp_final_dap/entities/Album.dart';
 import 'package:tp_final_dap/entities/User.dart';
+import 'package:tp_final_dap/presentation/add_album_screen.dart';
 import 'package:tp_final_dap/presentation/album_detail_screen.dart';
 import 'package:tp_final_dap/providers/albumProvider.dart';
 import 'package:tp_final_dap/providers/userProvider.dart';
@@ -23,7 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     
     _focusNode.addListener(() {
-        if (_focusNode.hasFocus) {
+        if (_focusNode.hasFocus && ref.read(albumProvider).isEmpty) {
           ref.read(albumProvider.notifier).getAllAlbums();
         }
       }
@@ -77,6 +78,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     }
                   ),
+                ),
+                FloatingActionButton(
+                  onPressed: (){ 
+                    context.pushNamed(AddAlbumScreen.name);
+                    },
+                  child: const Icon(Icons.add),
                 ),
               ],
             ),

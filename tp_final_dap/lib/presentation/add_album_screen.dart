@@ -7,11 +7,12 @@ import 'package:go_router/go_router.dart';
 import 'package:tp_final_dap/entities/Album.dart';
 import 'package:tp_final_dap/presentation/home_screen.dart';
 import 'package:tp_final_dap/providers/albumProvider.dart';
+import 'package:tp_final_dap/providers/userProvider.dart';
 
-class EditAlbumScreen extends ConsumerWidget {
-  static const String name = 'edit_album_screen';
+class AddAlbumScreen extends ConsumerWidget {
+  static const String name = 'add_album_screen';
 
-  EditAlbumScreen({super.key,});
+  AddAlbumScreen({super.key,});
 
   final focusNode1 = FocusNode();
   final focusNode2 = FocusNode();
@@ -27,13 +28,11 @@ class EditAlbumScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
 
-    Album album = ref.watch(currentAlbum);
-
-    TextEditingController albumNameController = TextEditingController(text: album.albumName);
-    TextEditingController artistController = TextEditingController(text: album.artist);
-    TextEditingController yearController = TextEditingController(text: album.year.toString());
-    TextEditingController descriptionController = TextEditingController(text: album.description);
-    TextEditingController imgURLController = TextEditingController(text: album.imgURL);
+    TextEditingController albumNameController = TextEditingController();
+    TextEditingController artistController = TextEditingController();
+    TextEditingController yearController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+    TextEditingController imgURLController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Album configuration')),
@@ -45,7 +44,7 @@ class EditAlbumScreen extends ConsumerWidget {
               key: formKey, 
               child: Column(
                 children: [
-                  Text('Editar ${album.albumName}'),
+                  const Text('Crear nuevo álbum'),
                   
                   const SizedBox(height: 30),
               
@@ -162,24 +161,23 @@ class EditAlbumScreen extends ConsumerWidget {
                     focusNode: focusNode6,
                     onPressed: () async {
                       if (formKey.currentState?.validate() ?? false) {
-                      
                         final Album newAlbum = Album(
                           albumName: albumNameController.text, 
                           artist: artistController.text, 
                           description: descriptionController.text, 
                           imgURL: imgURLController.text, 
                           year: int.parse(yearController.text), 
-                          albumId: album.albumId
+                          albumId: '',
                         );
                         
-                        ref.read(albumProvider.notifier).editAlbum(album.albumId, newAlbum);
+                        ref.read(albumProvider.notifier).addAlbum(newAlbum);
                         
-                        ref.read(albumProvider.notifier).state = [];
+                        //ref.read(albumProvider.notifier).state = [];
 
                         context.goNamed(HomeScreen.name);
                       }
                     },
-                    child: const Text('Editar')
+                    child: const Text('Agregar')
                   ),
               
                 ],

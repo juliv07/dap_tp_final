@@ -16,17 +16,33 @@ class AlbumsNotifier extends StateNotifier<List<Album>> {
   AlbumsNotifier(this.db) : super([]);
 
   Future<void> addAlbum(Album album) async {
-    final doc = db.collection('albums').doc();
+    final newUserRef = db.collection('albums').doc();
+
+    final newAlbum = Album(
+      albumName: album.albumName, 
+      artist: album.artist, 
+      description: album.description, 
+      imgURL: album.imgURL, 
+      year: album.year, 
+      albumId: newUserRef.id.toString()
+    );
+
     try {
-      await doc.set(album.toFirestore());
-      state = [...state, album];
+      await newUserRef.set(newAlbum.toFirestore());
+      state = [...state, newAlbum];
     } catch (e) {
       print(e);
     }
   }
 
   Future<void> deleteAlbum(String albumId) async {
-    final doc = db.collection('albums').doc(albumId);
+
+    final docs = db.collection('albums').withConverter(
+        fromFirestore: Album.fromFirestore,
+        toFirestore: (Album album, _) => album.toFirestore()
+    );
+
+    final doc = docs.doc(albumId);
     try {
       await doc.delete();
       state = state.where((album) => album.albumId != albumId).toList();
@@ -36,14 +52,21 @@ class AlbumsNotifier extends StateNotifier<List<Album>> {
   }
 
   Future<void> editAlbum(String albumId, Album album) async {
-    final doc = db.collection('albums').doc(albumId);
+    
+    final docs = db.collection('albums').withConverter(
+        fromFirestore: Album.fromFirestore,
+        toFirestore: (Album album, _) => album.toFirestore()
+    );
 
+    final doc = docs.doc(albumId);
+    
     final newDoc = {
-      'albumName': album.albumId,
+      'albumName': album.albumName,
       'artist': album.artist,
       'year': album.year,
       'description': album.description,
       'imgURL': album.imgURL,
+      'albumId': album.albumId,
     };
     
     try {

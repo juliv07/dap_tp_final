@@ -148,7 +148,7 @@ class LoginScreen extends ConsumerWidget {
                             userId: idFromDB
                           );
                           try {
-                            context.pushNamed(HomeScreen.name);
+                            context.goNamed(HomeScreen.name);
                           } catch (e) {
                             print('Error during navigation: $e');
                           }       

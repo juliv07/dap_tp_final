@@ -27,11 +27,16 @@ class AlbumDetailScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Image.network(album.imgURL),
+                Image.network(
+                  album.imgURL,
+                  errorBuilder: (contex, error, stackTrace){
+                    return const Icon (Icons.hide_image_outlined);
+                  },
+                ),
                 const SizedBox(height: 30),
-                Text('${album.albumName} (${album.year})', style: const TextStyle(fontSize: 24),),
-                const SizedBox(height: 30),
-                Text(album.artist),
+                Text('${album.albumName} (${album.year})', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                const SizedBox(height: 5),
+                Text(album.artist, style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 30),
                 Text(album.description),
                 const SizedBox(height: 30,),
