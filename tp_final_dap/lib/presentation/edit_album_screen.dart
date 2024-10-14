@@ -158,6 +158,8 @@ class EditAlbumScreen extends ConsumerWidget {
                     },
                   ),
 
+                  const SizedBox(height: 15),
+
                   ElevatedButton(
                     focusNode: focusNode6,
                     onPressed: () async {
@@ -179,7 +181,7 @@ class EditAlbumScreen extends ConsumerWidget {
                         context.goNamed(HomeScreen.name);
                       }
                     },
-                    child: const Text('Editar')
+                    child: const Icon(Icons.done, color: Colors.green)
                   ),
               
                 ],

@@ -30,7 +30,7 @@ class AlbumDetailScreen extends ConsumerWidget {
                 Image.network(
                   album.imgURL,
                   errorBuilder: (contex, error, stackTrace){
-                    return const Icon (Icons.hide_image_outlined);
+                    return const Icon (Icons.hide_image_outlined, size: 150, color: Colors.black26,);
                   },
                 ),
                 const SizedBox(height: 30),
@@ -55,9 +55,10 @@ class AlbumDetailScreen extends ConsumerWidget {
                   }, 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
-                    textStyle: const TextStyle(color: Colors.white)
+                    textStyle: const TextStyle(color: Colors.white),
+                    fixedSize: const Size.fromWidth(80)
                   ),
-                  child: const Text('Eliminar') 
+                  child: const Icon(Icons.delete, color: Colors.white) 
                 )
               ],
             ),

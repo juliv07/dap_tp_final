@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -66,10 +68,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         leading: Image.network(
                           albums[index].imgURL,
                           errorBuilder: (contex, error, stackTrace){
-                            return const Icon (Icons.hide_image_outlined);
+                            return const Icon (Icons.hide_image_outlined, size: 55, color: Colors.black45,);
                           },
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
+                        minVerticalPadding: 18,
                         onTap: (){
                           ref.read(currentAlbum.notifier).state = albums[index];
                           ref.read(selectedAlbumIndexProvider.notifier).state = index;
